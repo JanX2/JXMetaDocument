@@ -8,12 +8,12 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class JXExtendedFileAttributes;
+#import "JXExtendedFileAttributes.h"
+#import "JXMetaKeyAndType.h"
 
 
 @interface JXMetaDocument : NSDocument {
 	NSMutableDictionary *_fileMetadata;
-	NSString *_windowFrameDescription;
 }
 
 @property (nonatomic, readwrite, strong) NSMutableDictionary *fileMetadata;
@@ -22,5 +22,8 @@
 
 - (BOOL)readMetadataJXForURL:(NSURL *)url;
 - (BOOL)saveMetadataJXToURL:(NSURL *)url;
+
+// Override this in your subclass to return your own JXMetaKeyAndType array.
+- (NSArray *)metadataKeyAndTypeArray;
 
 @end

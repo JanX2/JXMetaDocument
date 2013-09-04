@@ -8,11 +8,6 @@
 
 #import "JXMetaDocument.h"
 
-#import "JXExtendedFileAttributes.h"
-
-
-NSString * const	MetadataWindowRectKey		= @"de.geheimwerk.metadata.document-window-frame";
-
 
 @implementation JXMetaDocument
 
@@ -21,7 +16,7 @@ NSString * const	MetadataWindowRectKey		= @"de.geheimwerk.metadata.document-wind
 	self = [super init];
 	
 	if (self) {
-        _fileMetadata = [[NSMutableDictionary dictionary] retain];
+        _fileMetadata = [[NSMutableDictionary alloc] init];
 	}
 	
 	return self;
@@ -60,23 +55,49 @@ NSString * const	MetadataWindowRectKey		= @"de.geheimwerk.metadata.document-wind
 {
 	JXExtendedFileAttributes *extendedFileAttributes = [[JXExtendedFileAttributes alloc] initWithURL:url];
 
-	NSData *data = [extendedFileAttributes dataForKey:MetadataWindowRectKey];
+	NSArray *metaKeyAndTypeArray = [self metadataKeyAndTypeArray];
+	for (JXMetaKeyAndType* keyAndType in metaKeyAndTypeArray) {
+		NSString *key = keyAndType.key;
+		id value = [extendedFileAttributes objectForKey:key ofType:keyAndType.type];
+		if (value != nil) {
+			[_fileMetadata setObject:value forKey:key];
+		}
+		else {
+			[_fileMetadata removeObjectForKey:key];
+		}
+	}
 	
-	_windowFrameDescription = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	[extendedFileAttributes release];
 	
     return YES;
 }
 
 - (BOOL)saveMetadataJXToURL:(NSURL *)url;
 {
-    _windowFrameDescription = [self.windowForMetadataJX stringWithSavedFrame];
-	if (_windowFrameDescription == nil)  return NO;
+	BOOL success = YES;
 	
 	JXExtendedFileAttributes *extendedFileAttributes = [[JXExtendedFileAttributes alloc] initWithURL:url];
 	
-	NSData *data = [_windowFrameDescription dataUsingEncoding:NSUTF8StringEncoding];
-    
-	return [extendedFileAttributes setData:data forKey:MetadataWindowRectKey];
+	NSArray *metaKeyAndTypeArray = [self metadataKeyAndTypeArray];
+	for (JXMetaKeyAndType* keyAndType in metaKeyAndTypeArray) {
+		NSString *key = keyAndType.key;
+		id value = [_fileMetadata objectForKey:key];
+		if (value != nil) {
+			if ([extendedFileAttributes setObject:value ofType:keyAndType.type forKey:key] == NO) {
+				success = NO;
+			}
+		}
+		
+	}
+	
+	[extendedFileAttributes release];
+	
+	return success;
+}
+
+- (NSArray *)metadataKeyAndTypeArray;
+{
+	return [NSArray array];
 }
 
 #pragma mark -
