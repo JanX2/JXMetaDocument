@@ -100,12 +100,26 @@
 	return [NSArray array];
 }
 
+
+- (BOOL)shouldLoadMetadata;
+{
+	return YES;
+}
+
+- (void)didLoadMetadataWithResult:(BOOL)success;
+{
+	return;
+}
+
 #pragma mark -
 #pragma mark Overrides
 
 - (BOOL)readFromURL:(NSURL *)absoluteURL ofType:(NSString *)typeName error:(NSError **)outError
 {
-	[self readMetadataJXForURL:(NSURL *)absoluteURL];
+	if ([self shouldLoadMetadata]) {
+		BOOL success = [self readMetadataJXForURL:(NSURL *)absoluteURL];
+		[self didLoadMetadataWithResult:success];
+	}
 	
 	return [super readFromURL:absoluteURL ofType:typeName error:outError];
 }
