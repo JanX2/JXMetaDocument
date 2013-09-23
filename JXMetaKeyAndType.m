@@ -26,14 +26,7 @@
 {
 	id result = [[[self class] alloc] initWithKey:key type:type];
 	
-	return [result autorelease];
-}
-
-- (void)dealloc
-{
-	[_key release];
-	
-	[super dealloc];
+	return result;
 }
 
 @end

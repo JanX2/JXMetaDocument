@@ -22,13 +22,6 @@
 	return self;
 }
 
-- (void)dealloc
-{
-	self.fileMetadata = nil;
-	
-	[super dealloc];
-}
-
 
 #pragma mark -
 #pragma mark Utilities
@@ -67,8 +60,6 @@
 		}
 	}
 	
-	[extendedFileAttributes release];
-	
     return YES;
 }
 
@@ -89,8 +80,6 @@
 		}
 		
 	}
-	
-	[extendedFileAttributes release];
 	
 	return success;
 }
