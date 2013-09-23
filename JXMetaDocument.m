@@ -38,7 +38,7 @@
 	NSArray *windowControllers = [self windowControllers];
 	
 	if (windowControllers.count > 0) {
-		NSWindowController *windowController = [windowControllers objectAtIndex:0];
+		NSWindowController *windowController = windowControllers[0];
 		NSWindow *window = [windowController window];
 		return window;
 	}
@@ -60,7 +60,7 @@
 		NSString *key = keyAndType.key;
 		id value = [extendedFileAttributes objectForKey:key ofType:keyAndType.type];
 		if (value != nil) {
-			[_fileMetadata setObject:value forKey:key];
+			_fileMetadata[key] = value;
 		}
 		else {
 			[_fileMetadata removeObjectForKey:key];
@@ -81,7 +81,7 @@
 	NSArray *metaKeyAndTypeArray = [self metadataKeyAndTypeArray];
 	for (JXMetaKeyAndType* keyAndType in metaKeyAndTypeArray) {
 		NSString *key = keyAndType.key;
-		id value = [_fileMetadata objectForKey:key];
+		id value = _fileMetadata[key];
 		if (value != nil) {
 			if ([extendedFileAttributes setObject:value ofType:keyAndType.type forKey:key] == NO) {
 				success = NO;
@@ -97,7 +97,7 @@
 
 - (NSArray *)metadataKeyAndTypeArray;
 {
-	return [NSArray array];
+	return @[];
 }
 
 
