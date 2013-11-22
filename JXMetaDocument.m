@@ -17,6 +17,8 @@
 	
 	if (self) {
         _fileMetadata = [[NSMutableDictionary alloc] init];
+		
+		_saveJustTheMetadataIfDocumentHasNoChanges = YES;
 	}
 	
 	return self;
@@ -100,6 +102,11 @@
 	return;
 }
 
+- (void)willSaveMetadata;
+{
+	return;
+}
+
 #pragma mark -
 #pragma mark Overrides
 
@@ -115,9 +122,18 @@
 
 - (BOOL)writeSafelyToURL:(NSURL *)url ofType:(NSString *)typeName forSaveOperation:(NSSaveOperationType)saveOperation error:(NSError **)outError
 {
-	BOOL result = [super writeSafelyToURL:url ofType:typeName forSaveOperation:saveOperation error:outError];
+	BOOL documentIsEdited = self.isDocumentEdited;
+	BOOL result;
+	
+	if (!_saveJustTheMetadataIfDocumentHasNoChanges || documentIsEdited == YES) {
+		result = [super writeSafelyToURL:url ofType:typeName forSaveOperation:saveOperation error:outError];
+	}
+	else {
+		result = YES;
+	}
 	
 	if (result) {
+		[self willSaveMetadata];
 		/*result = */[self saveMetadataJXToURL:url]; // Metadata is not supposed to be critical. Thus we ignore any metadata saving errors.
 	}
 	

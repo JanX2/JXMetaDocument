@@ -14,9 +14,11 @@
 
 @interface JXMetaDocument : NSDocument {
 	NSMutableDictionary *_fileMetadata;
+	BOOL _saveJustTheMetadataIfDocumentHasNoChanges;
 }
 
 @property (nonatomic, readwrite, strong) NSMutableDictionary *fileMetadata;
+@property (nonatomic, readwrite, assign) BOOL saveJustTheMetadataIfDocumentHasNoChanges;
 
 - (NSWindow *)windowForMetadataJX;
 
