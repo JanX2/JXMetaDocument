@@ -107,6 +107,11 @@
 	return;
 }
 
+- (void)didSaveMetadataWithResult:(BOOL)success;
+{
+	return;
+}
+
 #pragma mark -
 #pragma mark Overrides
 
@@ -134,7 +139,8 @@
 	
 	if (result) {
 		[self willSaveMetadata];
-		/*result = */[self saveMetadataJXToURL:url]; // Metadata is not supposed to be critical. Thus we ignore any metadata saving errors.
+		BOOL success = [self saveMetadataJXToURL:url]; // Metadata is not supposed to be critical. Thus we ignore any metadata saving errors.
+		[self didSaveMetadataWithResult:success];
 	}
 	
 	return result;
