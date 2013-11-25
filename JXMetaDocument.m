@@ -143,7 +143,9 @@
 		result = YES;
 	}
 	
-	if (result) {
+	if ((result == YES) &&
+		(saveOperation != NSSaveToOperation) // Don’t save metadata for file exports.
+		) {
 		[self willSaveMetadata];
 		BOOL success = [self saveMetadataJXToURL:url]; // Metadata is not supposed to be critical. Thus we ignore any metadata saving errors.
 		[self didSaveMetadataWithResult:success];
