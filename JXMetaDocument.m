@@ -130,11 +130,11 @@
 	BOOL documentIsEdited = self.isDocumentEdited;
 	BOOL result;
 	
-	// Skip saving if skipping is not disabled, we save in-place and the document is not edited.
-	BOOL skipSaving = (_saveJustTheMetadataIfDocumentHasNoChanges &&
+	// Skip saving if the document was not changed, skipping is not disabled, and we save in-place.
+	BOOL skipSaving = (documentIsEdited == NO &&
+					   _saveJustTheMetadataIfDocumentHasNoChanges &&
 					   (saveOperation == NSSaveOperation ||
-						saveOperation == NSAutosaveInPlaceOperation) &&
-					   documentIsEdited == NO);
+						saveOperation == NSAutosaveInPlaceOperation));
 	
 	if (skipSaving) {
 		result = YES;
