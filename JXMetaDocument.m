@@ -18,7 +18,7 @@
 	if (self) {
         _fileMetadata = [[NSMutableDictionary alloc] init];
 		
-		_saveJustTheMetadataIfDocumentHasNoChanges = YES;
+		_saveJustTheMetadataIfDocumentHasNoChanges = NO;
 	}
 	
 	return self;
