@@ -130,17 +130,17 @@
 	BOOL documentIsEdited = self.isDocumentEdited;
 	BOOL result;
 	
-	// Skip saving if skipping is not disabled, we save in-place and the document is edited.
-	BOOL skipSaving = (!_saveJustTheMetadataIfDocumentHasNoChanges ||
-					   (saveOperation != NSSaveOperation &&
-						saveOperation != NSAutosaveInPlaceOperation) ||
-					   documentIsEdited == YES);
+	// Skip saving if skipping is not disabled, we save in-place and the document is not edited.
+	BOOL skipSaving = (_saveJustTheMetadataIfDocumentHasNoChanges &&
+					   (saveOperation == NSSaveOperation ||
+						saveOperation == NSAutosaveInPlaceOperation) &&
+					   documentIsEdited == NO);
 	
-	if (skipSaving == YES) {
-		result = [super writeSafelyToURL:url ofType:typeName forSaveOperation:saveOperation error:outError];
+	if (skipSaving) {
+		result = YES;
 	}
 	else {
-		result = YES;
+		result = [super writeSafelyToURL:url ofType:typeName forSaveOperation:saveOperation error:outError];
 	}
 	
 	if ((result == YES) &&
