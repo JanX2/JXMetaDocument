@@ -102,6 +102,12 @@
 	return;
 }
 
+- (BOOL)shouldSaveMetadataForSaveOperation:(NSSaveOperationType)saveOperation;
+{
+	// Don’t save metadata for file exports.
+	return (saveOperation != NSSaveToOperation);
+}
+
 - (void)willSaveMetadata;
 {
 	return;
@@ -144,7 +150,7 @@
 	}
 	
 	if ((result == YES) &&
-		(saveOperation != NSSaveToOperation) // Don’t save metadata for file exports.
+		[self shouldSaveMetadataForSaveOperation:saveOperation]
 		) {
 		[self willSaveMetadata];
 		BOOL success = [self saveMetadataJXToURL:url]; // Metadata is not supposed to be critical. Thus we ignore any metadata saving errors.
