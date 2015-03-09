@@ -48,40 +48,44 @@
 
 - (BOOL)readMetadataJXForURL:(NSURL *)url;
 {
-	JXExtendedFileAttributes *extendedFileAttributes = [[JXExtendedFileAttributes alloc] initWithURL:url];
-
-	NSArray *metaKeyAndTypeArray = [self metadataKeyAndTypeArray];
-	for (JXMetaKeyAndType* keyAndType in metaKeyAndTypeArray) {
-		NSString *key = keyAndType.key;
-		id value = [extendedFileAttributes objectForKey:key ofType:keyAndType.type];
-		if (value != nil) {
-			_fileMetadata[key] = value;
+	[self performSynchronousFileAccessUsingBlock:^{
+		JXExtendedFileAttributes *extendedFileAttributes = [[JXExtendedFileAttributes alloc] initWithURL:url];
+		
+		NSArray *metaKeyAndTypeArray = [self metadataKeyAndTypeArray];
+		for (JXMetaKeyAndType* keyAndType in metaKeyAndTypeArray) {
+			NSString *key = keyAndType.key;
+			id value = [extendedFileAttributes objectForKey:key ofType:keyAndType.type];
+			if (value != nil) {
+				_fileMetadata[key] = value;
+			}
+			else {
+				[_fileMetadata removeObjectForKey:key];
+			}
 		}
-		else {
-			[_fileMetadata removeObjectForKey:key];
-		}
-	}
+	}];
 	
     return YES;
 }
 
 - (BOOL)saveMetadataJXToURL:(NSURL *)url;
 {
-	BOOL success = YES;
+	__block BOOL success = YES;
 	
-	JXExtendedFileAttributes *extendedFileAttributes = [[JXExtendedFileAttributes alloc] initWithURL:url];
-	
-	NSArray *metaKeyAndTypeArray = [self metadataKeyAndTypeArray];
-	for (JXMetaKeyAndType* keyAndType in metaKeyAndTypeArray) {
-		NSString *key = keyAndType.key;
-		id value = _fileMetadata[key];
-		if (value != nil) {
-			if ([extendedFileAttributes setObject:value ofType:keyAndType.type forKey:key] == NO) {
-				success = NO;
-			}
-		}
+	[self performSynchronousFileAccessUsingBlock:^{
+		JXExtendedFileAttributes *extendedFileAttributes = [[JXExtendedFileAttributes alloc] initWithURL:url];
 		
-	}
+		NSArray *metaKeyAndTypeArray = [self metadataKeyAndTypeArray];
+		for (JXMetaKeyAndType* keyAndType in metaKeyAndTypeArray) {
+			NSString *key = keyAndType.key;
+			id value = _fileMetadata[key];
+			if (value != nil) {
+				if ([extendedFileAttributes setObject:value ofType:keyAndType.type forKey:key] == NO) {
+					success = NO;
+				}
+			}
+			
+		}
+	}];
 	
 	return success;
 }
