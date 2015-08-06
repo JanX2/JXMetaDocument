@@ -138,7 +138,7 @@
 - (BOOL)writeSafelyToURL:(NSURL *)url ofType:(NSString *)typeName forSaveOperation:(NSSaveOperationType)saveOperation error:(NSError **)outError
 {
 	BOOL documentIsEdited = self.isDocumentEdited;
-	BOOL result;
+	BOOL success;
 	
 	// Skip saving: if the document was not changed, skipping is not disabled, and we are instructed to save in-place.
 	BOOL skipSaving = (documentIsEdited == NO &&
@@ -147,21 +147,21 @@
 						saveOperation == NSAutosaveInPlaceOperation));
 	
 	if (skipSaving) {
-		result = YES;
+		success = YES;
 	}
 	else {
-		result = [super writeSafelyToURL:url ofType:typeName forSaveOperation:saveOperation error:outError];
+		success = [super writeSafelyToURL:url ofType:typeName forSaveOperation:saveOperation error:outError];
 	}
 	
-	if ((result == YES) &&
+	if (success &&
 		[self shouldSaveMetadataForSaveOperation:saveOperation]
 		) {
 		[self willSaveMetadata];
-		BOOL success = [self saveMetadataJXToURL:url]; // Metadata is not supposed to be critical. Thus we ignore any metadata saving errors.
-		[self didSaveMetadataWithResult:success];
+		BOOL didSaveMetadata = [self saveMetadataJXToURL:url]; // Metadata is not supposed to be critical. Thus we ignore any metadata saving errors.
+		[self didSaveMetadataWithResult:didSaveMetadata];
 	}
 	
-	return result;
+	return success;
 }
 
 @end
