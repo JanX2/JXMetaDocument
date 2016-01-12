@@ -52,9 +52,10 @@
 		JXExtendedFileAttributes *extendedFileAttributes = [[JXExtendedFileAttributes alloc] initWithURL:url];
 		
 		NSArray *metaKeyAndTypeArray = [self metadataKeyAndTypeArray];
-		for (JXMetaKeyAndType* keyAndType in metaKeyAndTypeArray) {
+		for (JXMetaKeyAndType *keyAndType in metaKeyAndTypeArray) {
 			NSString *key = keyAndType.key;
-			id value = [extendedFileAttributes objectForKey:key ofType:keyAndType.type];
+			id value = [extendedFileAttributes objectForKey:key
+													 ofType:keyAndType.type];
 			if (value != nil) {
 				_fileMetadata[key] = value;
 			}
@@ -75,11 +76,13 @@
 		JXExtendedFileAttributes *extendedFileAttributes = [[JXExtendedFileAttributes alloc] initWithURL:url];
 		
 		NSArray *metaKeyAndTypeArray = [self metadataKeyAndTypeArray];
-		for (JXMetaKeyAndType* keyAndType in metaKeyAndTypeArray) {
+		for (JXMetaKeyAndType *keyAndType in metaKeyAndTypeArray) {
 			NSString *key = keyAndType.key;
 			id value = _fileMetadata[key];
 			if (value != nil) {
-				if ([extendedFileAttributes setObject:value ofType:keyAndType.type forKey:key] == NO) {
+				if ([extendedFileAttributes setObject:value
+											   ofType:keyAndType.type
+											   forKey:key] == NO) {
 					success = NO;
 				}
 			}
@@ -125,17 +128,24 @@
 #pragma mark -
 #pragma mark Overrides
 
-- (BOOL)readFromURL:(NSURL *)absoluteURL ofType:(NSString *)typeName error:(NSError **)outError
+- (BOOL)readFromURL:(NSURL *)absoluteURL
+			 ofType:(NSString *)typeName
+			  error:(NSError **)outError
 {
 	if ([self shouldLoadMetadata]) {
 		BOOL success = [self readMetadataJXForURL:(NSURL *)absoluteURL];
 		[self didLoadMetadataWithResult:success];
 	}
 	
-	return [super readFromURL:absoluteURL ofType:typeName error:outError];
+	return [super readFromURL:absoluteURL
+					   ofType:typeName
+						error:outError];
 }
 
-- (BOOL)writeSafelyToURL:(NSURL *)url ofType:(NSString *)typeName forSaveOperation:(NSSaveOperationType)saveOperation error:(NSError **)outError
+- (BOOL)writeSafelyToURL:(NSURL *)url
+				  ofType:(NSString *)typeName
+		forSaveOperation:(NSSaveOperationType)saveOperation
+				   error:(NSError **)outError
 {
 	BOOL documentIsEdited = self.isDocumentEdited;
 	BOOL success;
@@ -154,8 +164,7 @@
 	}
 	
 	if (success &&
-		[self shouldSaveMetadataForSaveOperation:saveOperation]
-		) {
+		[self shouldSaveMetadataForSaveOperation:saveOperation]) {
 		[self willSaveMetadata];
 		BOOL didSaveMetadata = [self saveMetadataJXToURL:url]; // Metadata is not supposed to be critical. Thus we ignore any metadata saving errors.
 		[self didSaveMetadataWithResult:didSaveMetadata];
