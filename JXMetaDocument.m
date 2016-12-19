@@ -4,6 +4,7 @@
 //
 //  Created by Jan on 03.08.13.
 //
+//  Copyright 2013-2016 Jan Weiß. Some rights reserved: <http://opensource.org/licenses/mit-license.php>
 //
 
 #import "JXMetaDocument.h"
