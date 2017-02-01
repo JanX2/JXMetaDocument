@@ -29,4 +29,14 @@
 // Override this in your subclass to return your own JXMetaKeyAndType array.
 - (NSArray *)metadataKeyAndTypeArray;
 
+// Optionally, override these in your subclass for more fine-grained control.
+// Some of these may do nothing in the current implementation. This may change.
+// So be sure to call them on super!
+- (BOOL)shouldLoadMetadata;
+- (void)didLoadMetadataWithResult:(BOOL)success;
+
+- (BOOL)shouldSaveMetadataForSaveOperation:(NSSaveOperationType)saveOperation;
+- (void)willSaveMetadata;
+- (void)didSaveMetadataWithResult:(BOOL)success;
+
 @end
