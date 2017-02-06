@@ -73,7 +73,7 @@
 {
 	__block BOOL success = YES;
 	
-	[self performSynchronousFileAccessUsingBlock:^{
+	{
 		JXExtendedFileAttributes *extendedFileAttributes = [[JXExtendedFileAttributes alloc] initWithURL:url];
 		
 		NSArray *metaKeyAndTypeArray = [self metadataKeyAndTypeArray];
@@ -89,7 +89,7 @@
 			}
 			
 		}
-	}];
+	}
 	
 	return success;
 }
