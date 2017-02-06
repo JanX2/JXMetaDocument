@@ -85,6 +85,7 @@
 											   ofType:keyAndType.type
 											   forKey:key] == NO) {
 					success = NO;
+					// We don’t break here, because we want to at least try to finish processing the other key-value pairs.
 				}
 			}
 			
