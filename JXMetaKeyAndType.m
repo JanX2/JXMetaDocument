@@ -11,7 +11,7 @@
 
 @implementation JXMetaKeyAndType
 
-- (id)initWithKey:(NSString *)key type:(JXExtendedFileAttributesValueTypes)type;
+- (instancetype)initWithKey:(NSString *)key type:(JXExtendedFileAttributesValueTypes)type;
 {
 	self = [super init];
 	

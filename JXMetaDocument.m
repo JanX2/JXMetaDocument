@@ -12,7 +12,7 @@
 
 @implementation JXMetaDocument
 
-- (id)init
+- (instancetype)init
 {
 	self = [super init];
 	
@@ -31,11 +31,11 @@
 
 - (NSWindow *)windowForMetadataJX;
 {
-	NSArray *windowControllers = [self windowControllers];
+	NSArray *windowControllers = self.windowControllers;
 	
 	if (windowControllers.count > 0) {
 		NSWindowController *windowController = windowControllers[0];
-		NSWindow *window = [windowController window];
+		NSWindow *window = windowController.window;
 		return window;
 	}
 	else {

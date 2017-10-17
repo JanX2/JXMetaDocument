@@ -16,7 +16,7 @@
 @property (nonatomic, readonly, strong) NSString *key;
 @property (nonatomic, readonly) JXExtendedFileAttributesValueTypes type;
 
-- (id)initWithKey:(NSString *)key type:(JXExtendedFileAttributesValueTypes)type;
+- (instancetype)initWithKey:(NSString *)key type:(JXExtendedFileAttributesValueTypes)type;
 + (id)objectWithKey:(NSString *)key type:(JXExtendedFileAttributesValueTypes)type;
 
 @end
