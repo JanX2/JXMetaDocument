@@ -101,7 +101,7 @@
 }
 
 
-- (BOOL)shouldLoadMetadata;
+- (BOOL)shouldLoadMetadataForType:(NSString *)typeName;
 {
 	return YES;
 }
@@ -111,7 +111,8 @@
 	return;
 }
 
-- (BOOL)shouldSaveMetadataForSaveOperation:(NSSaveOperationType)saveOperation;
+- (BOOL)shouldSaveMetadataForType:(NSString *)typeName
+					saveOperation:(NSSaveOperationType)saveOperation;
 {
 	// Don’t save metadata for file exports.
 	return (saveOperation != NSSaveToOperation);
@@ -134,7 +135,7 @@
 			 ofType:(NSString *)typeName
 			  error:(NSError **)outError
 {
-	if ([self shouldLoadMetadata]) {
+	if ([self shouldLoadMetadataForType:typeName]) {
 		BOOL success = [self readMetadataJXForURL:(NSURL *)absoluteURL];
 		[self didLoadMetadataWithResult:success];
 	}
@@ -166,7 +167,8 @@
 	}
 	
 	if (success &&
-		[self shouldSaveMetadataForSaveOperation:saveOperation]) {
+		[self shouldSaveMetadataForType:typeName
+						  saveOperation:saveOperation]) {
 		[self willSaveMetadata];
 		BOOL didSaveMetadata = [self saveMetadataJXToURL:url]; // Metadata is not supposed to be critical. Thus we ignore any metadata saving errors.
 		[self didSaveMetadataWithResult:didSaveMetadata];

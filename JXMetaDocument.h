@@ -32,10 +32,11 @@
 // Optionally, override these in your subclass for more fine-grained control.
 // Some of these may do nothing in the current implementation. This may change.
 // So be sure to call them on super!
-- (BOOL)shouldLoadMetadata;
+- (BOOL)shouldLoadMetadataForType:(NSString *)typeName;
 - (void)didLoadMetadataWithResult:(BOOL)success;
 
-- (BOOL)shouldSaveMetadataForSaveOperation:(NSSaveOperationType)saveOperation;
+- (BOOL)shouldSaveMetadataForType:(NSString *)typeName
+					saveOperation:(NSSaveOperationType)saveOperation;
 - (void)willSaveMetadata;
 - (void)didSaveMetadataWithResult:(BOOL)success;
 
