@@ -18,7 +18,7 @@
 	BOOL _saveJustTheMetadataIfDocumentHasNoChanges;
 }
 
-@property (nonatomic, readwrite, strong) NSMutableDictionary *fileMetadata;
+@property (nonatomic, readwrite, strong) NSMutableDictionary *fileMetadata; // NOTE: For internal/category use only!
 @property (nonatomic, readwrite, assign) BOOL saveJustTheMetadataIfDocumentHasNoChanges;
 
 - (NSWindow *)windowForMetadataJX;
