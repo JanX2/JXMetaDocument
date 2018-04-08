@@ -21,13 +21,13 @@
 @property (nonatomic, readwrite, strong) NSMutableDictionary *fileMetadata; // NOTE: For internal/category use only!
 @property (nonatomic, readwrite, assign) BOOL saveJustTheMetadataIfDocumentHasNoChanges;
 
-- (NSWindow *)windowForMetadataJX;
+@property (nonatomic, readonly, strong) NSWindow *windowForMetadataJX;
 
 - (BOOL)readMetadataJXForURL:(NSURL *)url;
 - (BOOL)saveMetadataJXToURL:(NSURL *)url;
 
 // Override this in your subclass to return your own JXMetaKeyAndType array.
-- (NSArray *)metadataKeyAndTypeArray;
+@property (nonatomic, readonly, copy) NSArray *metadataKeyAndTypeArray;
 
 // Optionally, override these in your subclass for more fine-grained control.
 // Some of these may do nothing in the current implementation. This may change.
