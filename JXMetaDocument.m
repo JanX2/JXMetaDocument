@@ -10,6 +10,8 @@
 #import "JXMetaDocument.h"
 
 
+// TODO: Consider implementing using NSDocument’s -fileAttributesToWriteToURL:ofType:forSaveOperation:originalContentsURL:error: or -writeToURL:ofType:forSaveOperation:originalContentsURL:error:.
+
 @implementation JXMetaDocument
 
 - (instancetype)init
