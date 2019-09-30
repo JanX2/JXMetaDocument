@@ -34,10 +34,12 @@
 // So be sure to call them on super!
 - (BOOL)shouldLoadMetadataForType:(NSString *)typeName;
 - (void)didLoadMetadataWithResult:(BOOL)success;
+- (void)skippedLoadingMetadata;
 
 - (BOOL)shouldSaveMetadataForType:(NSString *)typeName
 					saveOperation:(NSSaveOperationType)saveOperation;
 - (void)willSaveMetadata;
 - (void)didSaveMetadataWithResult:(BOOL)success;
+- (void)skippedSavingMetadata;
 
 @end

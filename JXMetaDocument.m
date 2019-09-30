@@ -113,6 +113,11 @@
 	return;
 }
 
+- (void)skippedLoadingMetadata;
+{
+	return;
+}
+
 - (BOOL)shouldSaveMetadataForType:(NSString *)typeName
 					saveOperation:(NSSaveOperationType)saveOperation;
 {
@@ -130,6 +135,11 @@
 	return;
 }
 
+- (void)skippedSavingMetadata;
+{
+	return;
+}
+
 #pragma mark -
 #pragma mark Overrides
 
@@ -140,6 +150,9 @@
 	if ([self shouldLoadMetadataForType:typeName]) {
 		BOOL success = [self readMetadataJXForURL:(NSURL *)absoluteURL];
 		[self didLoadMetadataWithResult:success];
+	}
+	else {
+		[self skippedLoadingMetadata];
 	}
 	
 	return [super readFromURL:absoluteURL
@@ -168,12 +181,16 @@
 		success = [super writeSafelyToURL:url ofType:typeName forSaveOperation:saveOperation error:outError];
 	}
 	
-	if (success &&
-		[self shouldSaveMetadataForType:typeName
-						  saveOperation:saveOperation]) {
-		[self willSaveMetadata];
-		BOOL didSaveMetadata = [self saveMetadataJXToURL:url]; // Metadata is not supposed to be critical. Thus we ignore any metadata saving errors.
-		[self didSaveMetadataWithResult:didSaveMetadata];
+	if (success) {
+		if ([self shouldSaveMetadataForType:typeName
+							  saveOperation:saveOperation]) {
+			[self willSaveMetadata];
+			BOOL didSaveMetadata = [self saveMetadataJXToURL:url]; // Metadata is not supposed to be critical. Thus we ignore any metadata saving errors.
+			[self didSaveMetadataWithResult:didSaveMetadata];
+		}
+		else {
+			[self skippedSavingMetadata];
+		}
 	}
 	
 	return success;
